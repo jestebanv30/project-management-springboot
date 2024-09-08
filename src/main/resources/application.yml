@@ -1,0 +1,29 @@
+# Configuraciones globales
+spring:
+  profiles:
+    active: dev
+  application:
+    name: project-management
+
+server:
+  servlet:
+    context-path: /api
+
+jpa:
+  database:
+  database-platform: org.hibernate.dialect.PostgreSQLDialect
+  hibernate:
+    ddl-auto: update
+
+---
+# Configuraciones para el perfil dev
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/
+    username: postgres
+    password: 12345
