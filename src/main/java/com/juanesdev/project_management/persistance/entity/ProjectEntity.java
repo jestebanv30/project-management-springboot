@@ -34,10 +34,10 @@ public class ProjectEntity {
     private String filesUrl;
 
     @ManyToOne
-    @JoinColumn(name = "student_id", referencedColumnName = "id_user", nullable = false)
+    @JoinColumn(name = "student_id", insertable = false, updatable = false)
     private UserEntity student;
 
     @ManyToOne
-    @JoinColumn(name = "course_id", referencedColumnName = "id_course", nullable = false)
+    @JoinColumn(name = "course_id", insertable = false, updatable = false)
     private CourseEntity course;
 }

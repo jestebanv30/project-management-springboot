@@ -12,14 +12,14 @@ public class CourseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_course")
-    private String idCourse;
+    private Integer idCourse;
+
+    private String title;
 
     @Column(name = "teacher_id")
     private String teacherId;
 
-    private String title;
-
     @ManyToOne
-    @JoinColumn(name = "teacher_id", referencedColumnName = "id_user", nullable = true)
+    @JoinColumn(name = "teacher_id", insertable = false, updatable = false)
     private UserEntity teacher;
 }

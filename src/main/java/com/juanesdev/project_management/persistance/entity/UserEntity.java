@@ -1,7 +1,12 @@
 package com.juanesdev.project_management.persistance.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.List;
+
+@Getter @Setter
 @Entity
 @Table(name = "users")
 public class UserEntity {
@@ -20,4 +25,7 @@ public class UserEntity {
     private String password;
 
     private String role;
+
+    @OneToMany(mappedBy = "student", orphanRemoval = true)
+    private List<ProjectEntity> projects;
 }
