@@ -48,13 +48,31 @@ public class UserService implements IUserUseCase {
     }
 
     @Override
-    public UserDto update(UserDto userDto) {
-        getByIdCar(userDto.getIdUser());
-        return iUserRepository.save(userDto);
+    public Optional<UserDto> update(UserDto userDto) {
+        Optional<UserDto> existingUserDto = getByIdCar(userDto.getIdUser());
+
+        if (existingUserDto.isEmpty()) {
+            System.out.println("La cedula del usuario no existe");
+        }
+
+        Optional<UserDto> existingEmailDto = getByEmail(userDto.getEmail());
+
+        if (existingEmailDto.isPresent() && !existingEmailDto.get().getIdUser().equals(userDto.getIdUser())) {
+            System.out.println("El email ya esta asociado a una cuenta");
+        }
+
+        return Optional.of(iUserRepository.save(userDto));
     }
 
     @Override
     public boolean deleteById(String id) {
-        return false;
+        Optional<UserDto> userDto = iUserRepository.getByIdCar(id);
+
+        if (userDto.isEmpty()) {
+            System.out.println("La cedula del usuario no existe");
+        }
+
+        iUserRepository.deleteById(id);
+        return true;
     }
 }

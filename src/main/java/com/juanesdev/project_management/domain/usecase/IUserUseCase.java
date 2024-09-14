@@ -10,6 +10,6 @@ public interface IUserUseCase {
     Optional<UserDto> getByIdCar(String id);
     Optional<UserDto> getByEmail(String email);
     UserDto save(UserDto userDto);
-    UserDto update(UserDto userDto);
+    Optional<UserDto> update(UserDto userDto);
     boolean deleteById(String id);
 }
