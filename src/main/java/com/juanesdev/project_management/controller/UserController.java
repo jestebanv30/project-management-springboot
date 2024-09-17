@@ -21,9 +21,9 @@ public class UserController {
         return ResponseEntity.ok().body(iUserUseCase.getAll());
     }
 
-    @GetMapping(path = "/{idCar}")
-    public ResponseEntity<UserDto> getById(@PathVariable String idCar) {
-        return ResponseEntity.of(iUserUseCase.getByIdCar(idCar));
+    @GetMapping(path = "/{idUser}")
+    public ResponseEntity<UserDto> getById(@PathVariable String idUser) {
+        return ResponseEntity.of(iUserUseCase.getByIdCar(idUser));
     }
 
     @GetMapping(path = "/email/{email}")
@@ -41,8 +41,8 @@ public class UserController {
         return ResponseEntity.of(iUserUseCase.update(userDto));
     }
 
-    @DeleteMapping(path = "/{idCar}")
-    public ResponseEntity<Void> delete(@PathVariable String idCar) {
-        return new ResponseEntity<>(this.iUserUseCase.deleteById(idCar) ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+    @DeleteMapping(path = "/{idUser}")
+    public ResponseEntity<Void> delete(@PathVariable String idUser) {
+        return new ResponseEntity<>(this.iUserUseCase.deleteById(idUser) ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }
 }

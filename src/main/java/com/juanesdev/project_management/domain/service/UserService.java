@@ -5,6 +5,7 @@ import com.juanesdev.project_management.domain.repository.IUserRepository;
 import com.juanesdev.project_management.domain.usecase.IUserUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.View;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +15,7 @@ import java.util.Optional;
 public class UserService implements IUserUseCase {
 
     private final IUserRepository iUserRepository;
+    private final View error;
 
     @Override
     public List<UserDto> getAll() {
@@ -70,6 +72,7 @@ public class UserService implements IUserUseCase {
 
         if (userDto.isEmpty()) {
             System.out.println("La cedula del usuario no existe");
+            return false;
         }
 
         iUserRepository.deleteById(id);

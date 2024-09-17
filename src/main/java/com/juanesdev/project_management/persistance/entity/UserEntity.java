@@ -12,7 +12,6 @@ import java.util.List;
 public class UserEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_user")
     private String idUser;
 
@@ -26,6 +25,11 @@ public class UserEntity {
 
     private String role;
 
-    @OneToMany(mappedBy = "student", orphanRemoval = true)
+    // Relación con ProjectEntity (los proyectos creados por el estudiante)
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProjectEntity> projects;
+
+    //Relación con CourseEntity (los cursos que dicta el usuario si es profesor)
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
+    private List<CourseEntity> courses;
 }

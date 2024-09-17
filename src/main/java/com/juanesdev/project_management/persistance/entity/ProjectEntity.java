@@ -33,10 +33,12 @@ public class ProjectEntity {
     @Column(name = "files_url")
     private String filesUrl;
 
+    //relacion con UserEntity (El estudiante que creó el proyecto)
     @ManyToOne
     @JoinColumn(name = "student_id", insertable = false, updatable = false)
     private UserEntity student;
 
+    // Relación con CourseEntity (el curso asociado al proyecto)
     @ManyToOne
     @JoinColumn(name = "course_id", insertable = false, updatable = false)
     private CourseEntity course;

@@ -14,7 +14,7 @@ jpa:
   database-platform: org.hibernate.dialect.PostgreSQLDialect
   hibernate:
     ddl-auto: update
-
+  
 ---
 # Configuraciones para el perfil dev
 spring:
