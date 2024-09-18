@@ -27,6 +27,6 @@ public class CourseEntity {
     private UserEntity teacher;
 
     //Relacion con ProjectEntity (los proyectos asociados a este curso)
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "course")
     private List<ProjectEntity> projects;
 }

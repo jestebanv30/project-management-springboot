@@ -5,7 +5,6 @@ import com.juanesdev.project_management.domain.repository.IUserRepository;
 import com.juanesdev.project_management.domain.usecase.IUserUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.View;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +14,6 @@ import java.util.Optional;
 public class UserService implements IUserUseCase {
 
     private final IUserRepository iUserRepository;
-    private final View error;
 
     @Override
     public List<UserDto> getAll() {
@@ -27,7 +25,7 @@ public class UserService implements IUserUseCase {
         Optional<UserDto> userDto = iUserRepository.getByIdCar(id);
 
         if (userDto.isEmpty()) {
-            System.out.println("La cedula del usuario no existe");
+            throw new RuntimeException("Usuario no encontrado");
         }
 
         return userDto;
@@ -38,7 +36,7 @@ public class UserService implements IUserUseCase {
         Optional<UserDto> userDto = iUserRepository.getByEmail(email);
 
         if (userDto.isEmpty()) {
-            System.out.println("El email del usario no existe");
+            throw new RuntimeException("Usuario no encontrado");
         }
 
         return userDto;
@@ -54,13 +52,13 @@ public class UserService implements IUserUseCase {
         Optional<UserDto> existingUserDto = getByIdCar(userDto.getIdUser());
 
         if (existingUserDto.isEmpty()) {
-            System.out.println("La cedula del usuario no existe");
+            throw new RuntimeException("Usuario no encontrado");
         }
 
         Optional<UserDto> existingEmailDto = getByEmail(userDto.getEmail());
 
         if (existingEmailDto.isPresent() && !existingEmailDto.get().getIdUser().equals(userDto.getIdUser())) {
-            System.out.println("El email ya esta asociado a una cuenta");
+            throw new RuntimeException("El email ya pertenece a una cuenta");
         }
 
         return Optional.of(iUserRepository.save(userDto));
@@ -71,8 +69,7 @@ public class UserService implements IUserUseCase {
         Optional<UserDto> userDto = iUserRepository.getByIdCar(id);
 
         if (userDto.isEmpty()) {
-            System.out.println("La cedula del usuario no existe");
-            return false;
+            throw new RuntimeException("Usuario no encontrado");
         }
 
         iUserRepository.deleteById(id);

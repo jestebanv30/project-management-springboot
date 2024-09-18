@@ -25,7 +25,7 @@ public class CourseService implements ICourseUseCase {
         Optional<CourseDto> courseDto = iCourseRepository.getByIdCourse(id);
 
         if (courseDto.isEmpty()) {
-            System.out.println("El usuario no existe");
+            throw new RuntimeException("Usuario no encontrado");
         }
 
         return courseDto;
@@ -36,7 +36,7 @@ public class CourseService implements ICourseUseCase {
         Optional<CourseDto> courseDto = iCourseRepository.getByTitle(title);
 
         if (courseDto.isEmpty()) {
-            System.out.println("El usuario no existe");
+            throw new RuntimeException("Usuario no encontrado");
         }
 
         return courseDto;
@@ -52,13 +52,13 @@ public class CourseService implements ICourseUseCase {
         Optional<CourseDto> existingCourseDto = iCourseRepository.getByIdCourse(courseDto.getIdCourse());
 
         if (existingCourseDto.isEmpty()) {
-            System.out.println("El usuario no existe");
+            throw new RuntimeException("Usuario no encontrado");
         }
 
         Optional<CourseDto> existingTitle = iCourseRepository.getByTitle(courseDto.getTitle());
 
         if (existingTitle.isPresent() && !existingTitle.get().getIdCourse().equals(courseDto.getIdCourse())) {
-            System.out.println("El titulo ya está asociado a una cuenta");
+            throw new RuntimeException("El titulo ya pertenece a una cuenta");
         }
 
         return Optional.of(iCourseRepository.save(courseDto));
@@ -69,7 +69,7 @@ public class CourseService implements ICourseUseCase {
         Optional<CourseDto> courseDto = iCourseRepository.getByIdCourse(id);
 
         if (courseDto.isEmpty()) {
-            System.out.println("El usuario no existe");
+            throw new RuntimeException("Usuario no encontrado");
         }
 
         iCourseRepository.deleteById(id);

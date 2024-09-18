@@ -26,10 +26,10 @@ public class UserEntity {
     private String role;
 
     // Relación con ProjectEntity (los proyectos creados por el estudiante)
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "student")
     private List<ProjectEntity> projects;
 
     //Relación con CourseEntity (los cursos que dicta el usuario si es profesor)
-    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "teacher")
     private List<CourseEntity> courses;
 }
