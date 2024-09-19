@@ -30,7 +30,7 @@ public class CourseRepository implements ICourseRepository {
 
     @Override
     public Optional<CourseDto> getByTitle(String title) {
-        return iCourseCrud.findByTitle(title).map(iCourseMapper::toCourseDto);
+        return iCourseCrud.findByTitleIgnoreCase(title).map(iCourseMapper::toCourseDto);
     }
 
     @Override

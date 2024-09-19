@@ -26,7 +26,7 @@ public class CourseController {
         return ResponseEntity.of(iCourseUseCase.getByIdCourse(idCourse));
     }
 
-    @GetMapping(path = "/tittle/{title}")
+    @GetMapping(path = "/title/{title}")
     public ResponseEntity<CourseDto> getByTitle(@PathVariable String title) {
         return ResponseEntity.of(iCourseUseCase.getByTitle(title));
     }
