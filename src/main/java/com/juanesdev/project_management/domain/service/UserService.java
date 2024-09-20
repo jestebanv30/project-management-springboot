@@ -6,6 +6,7 @@ import com.juanesdev.project_management.domain.usecase.IUserUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,8 +22,19 @@ public class UserService implements IUserUseCase {
     }
 
     @Override
-    public Optional<UserDto> getByIdCar(String id) {
-        Optional<UserDto> userDto = iUserRepository.getByIdCar(id);
+    public Optional<UserDto> getByIdUser(String id) {
+        Optional<UserDto> userDto = iUserRepository.getByIdUser(id);
+
+        if (userDto.isEmpty()) {
+            throw new RuntimeException("Usuario no encontrado");
+        }
+
+        return userDto;
+    }
+
+    @Override
+    public Optional<UserDto> getByUsername(String username) {
+        Optional<UserDto> userDto = iUserRepository.getByUsername(username);
 
         if (userDto.isEmpty()) {
             throw new RuntimeException("Usuario no encontrado");
@@ -44,12 +56,21 @@ public class UserService implements IUserUseCase {
 
     @Override
     public UserDto save(UserDto userDto) {
+
+        Optional<UserDto> existingIdUser = iUserRepository.getByIdUser(userDto.getIdUser());
+        Optional<UserDto> existingEmailUser = iUserRepository.getByEmail(userDto.getEmail());
+        Optional<UserDto> existingUsername = iUserRepository.getByUsername(userDto.getUsername());
+
+        if (existingIdUser.isPresent() || existingEmailUser.isPresent() || existingUsername.isPresent()) {
+            throw new RuntimeException("Usuario ya existente");
+        }
+
         return iUserRepository.save(userDto);
     }
 
     @Override
     public Optional<UserDto> update(UserDto userDto) {
-        Optional<UserDto> existingUserDto = getByIdCar(userDto.getIdUser());
+        Optional<UserDto> existingUserDto = getByIdUser(userDto.getIdUser());
 
         if (existingUserDto.isEmpty()) {
             throw new RuntimeException("Usuario no encontrado");
@@ -66,7 +87,7 @@ public class UserService implements IUserUseCase {
 
     @Override
     public boolean deleteById(String id) {
-        Optional<UserDto> userDto = iUserRepository.getByIdCar(id);
+        Optional<UserDto> userDto = iUserRepository.getByIdUser(id);
 
         if (userDto.isEmpty()) {
             throw new RuntimeException("Usuario no encontrado");

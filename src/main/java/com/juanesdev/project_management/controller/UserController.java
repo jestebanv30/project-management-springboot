@@ -23,12 +23,17 @@ public class UserController {
 
     @GetMapping(path = "/{idUser}")
     public ResponseEntity<UserDto> getById(@PathVariable String idUser) {
-        return ResponseEntity.of(iUserUseCase.getByIdCar(idUser));
+        return ResponseEntity.of(iUserUseCase.getByIdUser(idUser));
     }
 
     @GetMapping(path = "/email/{email}")
     public ResponseEntity<UserDto> getByEmail(@PathVariable String email) {
         return ResponseEntity.of(iUserUseCase.getByEmail(email));
+    }
+
+    @GetMapping(path = "/username/{username}")
+    public ResponseEntity<UserDto> getByUsername(@PathVariable String username) {
+        return ResponseEntity.of(iUserUseCase.getByUsername(username));
     }
 
     @PostMapping()

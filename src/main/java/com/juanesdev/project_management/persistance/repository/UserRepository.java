@@ -24,8 +24,13 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public Optional<UserDto> getByIdCar(String id) {
+    public Optional<UserDto> getByIdUser(String id) {
         return iUserCrud.findById(id).map(iUserMapper::toUserDto);
+    }
+
+    @Override
+    public Optional<UserDto> getByUsername(String username) {
+        return iUserCrud.findByUsernameIgnoreCase(username).map(iUserMapper::toUserDto);
     }
 
     @Override

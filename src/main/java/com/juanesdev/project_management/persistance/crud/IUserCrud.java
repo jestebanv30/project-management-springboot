@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface IUserCrud extends JpaRepository<UserEntity, String> {
     Optional<UserEntity> findByEmailIgnoreCase(String email);
+
+    Optional<UserEntity> findByUsernameIgnoreCase(String username);
 }

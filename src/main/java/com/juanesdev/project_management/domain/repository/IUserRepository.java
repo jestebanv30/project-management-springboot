@@ -7,7 +7,8 @@ import java.util.Optional;
 
 public interface IUserRepository {
     List<UserDto> getAll();
-    Optional<UserDto> getByIdCar(String id);
+    Optional<UserDto> getByIdUser(String id);
+    Optional<UserDto> getByUsername(String username);
     Optional<UserDto> getByEmail(String email);
     UserDto save(UserDto userDto);
     void deleteById(String id);
