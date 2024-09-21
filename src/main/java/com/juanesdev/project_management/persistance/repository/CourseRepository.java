@@ -6,6 +6,8 @@ import com.juanesdev.project_management.persistance.crud.ICourseCrud;
 import com.juanesdev.project_management.persistance.entity.CourseEntity;
 import com.juanesdev.project_management.persistance.mapper.ICourseMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -29,11 +31,6 @@ public class CourseRepository implements ICourseRepository {
     }
 
     @Override
-    public Optional<CourseDto> getByTitle(String title) {
-        return iCourseCrud.findByTitleIgnoreCase(title).map(iCourseMapper::toCourseDto);
-    }
-
-    @Override
     public CourseDto save(CourseDto courseDto) {
         CourseEntity courseEntity = iCourseMapper.toCourseEntity(courseDto);
         return iCourseMapper.toCourseDto(iCourseCrud.save(courseEntity));
@@ -42,6 +39,12 @@ public class CourseRepository implements ICourseRepository {
     @Override
     public void deleteById(Integer id) {
         iCourseCrud.deleteById(id);
+    }
+
+    // Metodo para obtener cursos con el numero de proyectos
+    @Override
+    public List<CourseDto> getCoursesWithProjectCount() {
+        return iCourseCrud.findCoursesWithProjectCount();
     }
 
 }

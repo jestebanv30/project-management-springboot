@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
@@ -41,5 +42,10 @@ public class ProjectRepository implements IProjectRepository {
     @Override
     public void deleteById(String id) {
         iProjectCrud.deleteById(id);
+    }
+
+    // Metodo para obtener el proyecto mas reciente aprobado
+    public Optional<ProjectDto> getMostRecentApprovedProject() {
+        return iProjectCrud.findMostRecentApprovedProject().map(iProjectMapper::toProjectDto);
     }
 }

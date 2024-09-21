@@ -15,4 +15,5 @@ public class ProjectDto {
     private LocalDateTime deliveryDate;
     private String status;
     private String filesUrl;
+    private LocalDateTime createdAt;
 }

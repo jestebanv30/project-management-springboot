@@ -33,6 +33,9 @@ public class ProjectEntity {
     @Column(name = "files_url")
     private String filesUrl;
 
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
     //relacion con UserEntity (El estudiante que creó el proyecto)
     @ManyToOne
     @JoinColumn(name = "student_id", insertable = false, updatable = false)

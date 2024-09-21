@@ -32,17 +32,6 @@ public class CourseService implements ICourseUseCase {
     }
 
     @Override
-    public Optional<CourseDto> getByTitle(String title) {
-        Optional<CourseDto> courseDto = iCourseRepository.getByTitle(title);
-
-        if (courseDto.isEmpty()) {
-            throw new RuntimeException("Usuario no encontrado");
-        }
-
-        return courseDto;
-    }
-
-    @Override
     public CourseDto save(CourseDto courseDto) {
         return iCourseRepository.save(courseDto);
     }
@@ -55,11 +44,11 @@ public class CourseService implements ICourseUseCase {
             throw new RuntimeException("Usuario no encontrado");
         }
 
-        Optional<CourseDto> existingTitle = iCourseRepository.getByTitle(courseDto.getTitle());
+        //Optional<CourseDto> existingTitle = iCourseRepository.getByTitle(courseDto.getTitle());
 
-        if (existingTitle.isPresent() && !existingTitle.get().getIdCourse().equals(courseDto.getIdCourse())) {
-            throw new RuntimeException("El titulo ya pertenece a una cuenta");
-        }
+        //if (existingTitle.isPresent() && !existingTitle.get().getIdCourse().equals(courseDto.getIdCourse())) {
+        //    throw new RuntimeException("El titulo ya pertenece a una cuenta");
+        //}
 
         return Optional.of(iCourseRepository.save(courseDto));
     }
@@ -74,5 +63,9 @@ public class CourseService implements ICourseUseCase {
 
         iCourseRepository.deleteById(id);
         return true;
+    }
+
+    public List<CourseDto> getCoursesWithProjectCount() {
+        return iCourseRepository.getCoursesWithProjectCount();
     }
 }

@@ -21,6 +21,9 @@ public class CourseEntity {
     @Column(name = "teacher_id")
     private String teacherId;
 
+    @Column(name = "total_projects")
+    private Integer totalProjects;
+
     //Relacion con UserEntity (el profesor del curso)
     @ManyToOne
     @JoinColumn(name = "teacher_id", insertable = false, updatable = false)

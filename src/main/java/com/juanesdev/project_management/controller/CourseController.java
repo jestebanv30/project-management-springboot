@@ -3,11 +3,14 @@ package com.juanesdev.project_management.controller;
 import com.juanesdev.project_management.domain.dto.CourseDto;
 import com.juanesdev.project_management.domain.usecase.ICourseUseCase;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @RestController
@@ -26,9 +29,9 @@ public class CourseController {
         return ResponseEntity.of(iCourseUseCase.getByIdCourse(idCourse));
     }
 
-    @GetMapping(path = "/title/{title}")
-    public ResponseEntity<CourseDto> getByTitle(@PathVariable String title) {
-        return ResponseEntity.of(iCourseUseCase.getByTitle(title));
+    @GetMapping("/with-projects")
+    public ResponseEntity<List<CourseDto>> getCoursesWithProjectCount() {
+        return ResponseEntity.ok().body(iCourseUseCase.getCoursesWithProjectCount());
     }
 
     @PostMapping()
