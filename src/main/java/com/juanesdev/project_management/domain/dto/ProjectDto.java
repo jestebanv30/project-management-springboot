@@ -7,9 +7,9 @@ import java.time.LocalDateTime;
 
 @Getter @Setter
 public class ProjectDto {
-    private String idProject;
+    private Integer idProject;
     private String studentId;
-    private String courseId;
+    private Integer courseId;
     private String title;
     private String description;
     private LocalDateTime deliveryDate;

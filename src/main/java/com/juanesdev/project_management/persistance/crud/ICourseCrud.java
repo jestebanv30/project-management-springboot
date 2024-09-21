@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ICourseCrud extends JpaRepository<CourseEntity, Integer> {
 
@@ -19,4 +20,6 @@ public interface ICourseCrud extends JpaRepository<CourseEntity, Integer> {
             "FROM CourseEntity c LEFT JOIN c.projects p " +
             "GROUP BY c.idCourse, c.teacherId, c.title")
     List<CourseDto> findCoursesWithProjectCount();
+
+    Optional<CourseEntity> findByTitleIgnoreCase (String title);
 }

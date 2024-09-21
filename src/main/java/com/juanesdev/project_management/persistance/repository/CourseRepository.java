@@ -6,8 +6,6 @@ import com.juanesdev.project_management.persistance.crud.ICourseCrud;
 import com.juanesdev.project_management.persistance.entity.CourseEntity;
 import com.juanesdev.project_management.persistance.mapper.ICourseMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -28,6 +26,11 @@ public class CourseRepository implements ICourseRepository {
     @Override
     public Optional<CourseDto> getByIdCourse(Integer id) {
         return iCourseCrud.findById(id).map(iCourseMapper::toCourseDto);
+    }
+
+    @Override
+    public Optional<CourseDto> getByTitle(String title) {
+        return iCourseCrud.findByTitleIgnoreCase(title).map(iCourseMapper::toCourseDto);
     }
 
     @Override

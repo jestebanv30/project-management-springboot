@@ -61,7 +61,7 @@ public class UserService implements IUserUseCase {
         Optional<UserDto> existingUsername = iUserRepository.getByUsername(userDto.getUsername());
 
         if (existingIdUser.isPresent() || existingEmailUser.isPresent() || existingUsername.isPresent()) {
-            throw new RuntimeException("Usuario ya existente");
+            throw new RuntimeException("Usuario existente");
         }
 
         return iUserRepository.save(userDto);

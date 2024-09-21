@@ -13,13 +13,13 @@ public class ProjectEntity {
 
     @Id
     @Column(name = "id_project")
-    private String idProject;
+    private Integer idProject;
 
     @Column(name = "student_id")
     private String studentId;
 
     @Column(name = "course_id")
-    private String courseId;
+    private Integer courseId;
 
     private String title;
 

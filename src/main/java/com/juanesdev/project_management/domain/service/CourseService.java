@@ -25,30 +25,45 @@ public class CourseService implements ICourseUseCase {
         Optional<CourseDto> courseDto = iCourseRepository.getByIdCourse(id);
 
         if (courseDto.isEmpty()) {
-            throw new RuntimeException("Usuario no encontrado");
+            throw new RuntimeException("Curso no encontrado");
         }
 
         return courseDto;
     }
 
     @Override
+    public Optional<CourseDto> getByTitle(String title) {
+        Optional<CourseDto> courseDtoByTitle = iCourseRepository.getByTitle(title);
+
+        if (courseDtoByTitle.isEmpty()) {
+            throw new RuntimeException("Curso no encontrado");
+        }
+
+        return courseDtoByTitle;
+    }
+
+    @Override
     public CourseDto save(CourseDto courseDto) {
+        Optional<CourseDto> courseDtoById = iCourseRepository.getByIdCourse(courseDto.getIdCourse());
+        Optional<CourseDto> courseDtoByTitle = iCourseRepository.getByTitle(courseDto.getTitle());
+
+        if (courseDtoById.isPresent() || courseDtoByTitle.isPresent()) {
+            throw new RuntimeException("Curso ya existente");
+        }
+
         return iCourseRepository.save(courseDto);
     }
 
     @Override
     public Optional<CourseDto> update(CourseDto courseDto) {
         Optional<CourseDto> existingCourseDto = iCourseRepository.getByIdCourse(courseDto.getIdCourse());
+        Optional<CourseDto> courseDtoByTitle = iCourseRepository.getByTitle(courseDto.getTitle());
 
         if (existingCourseDto.isEmpty()) {
-            throw new RuntimeException("Usuario no encontrado");
+            throw new RuntimeException("El Curso no existe");
+        } else if (courseDtoByTitle.isPresent() && !courseDtoByTitle.get().getIdCourse().equals(courseDto.getIdCourse())) {
+            throw new RuntimeException("El título del curso ya está en uso");
         }
-
-        //Optional<CourseDto> existingTitle = iCourseRepository.getByTitle(courseDto.getTitle());
-
-        //if (existingTitle.isPresent() && !existingTitle.get().getIdCourse().equals(courseDto.getIdCourse())) {
-        //    throw new RuntimeException("El titulo ya pertenece a una cuenta");
-        //}
 
         return Optional.of(iCourseRepository.save(courseDto));
     }
@@ -58,7 +73,7 @@ public class CourseService implements ICourseUseCase {
         Optional<CourseDto> courseDto = iCourseRepository.getByIdCourse(id);
 
         if (courseDto.isEmpty()) {
-            throw new RuntimeException("Usuario no encontrado");
+            throw new RuntimeException("Curso no encontrado");
         }
 
         iCourseRepository.deleteById(id);

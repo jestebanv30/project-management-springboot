@@ -7,9 +7,16 @@ import java.util.Optional;
 
 public interface ICourseUseCase {
     List<CourseDto> getAll();
+
     Optional<CourseDto> getByIdCourse(Integer id);
+
+    Optional<CourseDto> getByTitle(String title);
+
     CourseDto save(CourseDto courseDto);
+
     Optional<CourseDto> update(CourseDto courseDto);
+
     boolean deleteById(Integer id);
+
     List<CourseDto> getCoursesWithProjectCount();
 }

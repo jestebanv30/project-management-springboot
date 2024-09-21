@@ -24,7 +24,17 @@ public class ProjectRepository implements IProjectRepository {
     }
 
     @Override
-    public List<ProjectDto> getByCourseId(String courseId) {
+    public Optional<ProjectDto> getById(Integer idProject) {
+        return iProjectCrud.findById(idProject).map(iProjectMapper::toProjectDto);
+    }
+
+    @Override
+    public Optional<ProjectDto> getByTitle(String title) {
+        return iProjectCrud.findByTitleIgnoreCase(title).map(iProjectMapper::toProjectDto);
+    }
+
+    @Override
+    public List<ProjectDto> getByCourseId(Integer courseId) {
         return iProjectMapper.toProjectDtoList(iProjectCrud.findAllByCourseId(courseId));
     }
 
@@ -40,7 +50,7 @@ public class ProjectRepository implements IProjectRepository {
     }
 
     @Override
-    public void deleteById(String id) {
+    public void deleteById(Integer id) {
         iProjectCrud.deleteById(id);
     }
 

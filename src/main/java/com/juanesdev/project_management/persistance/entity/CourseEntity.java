@@ -22,7 +22,7 @@ public class CourseEntity {
     private String teacherId;
 
     @Column(name = "total_projects")
-    private Integer totalProjects;
+    private Long totalProjects;
 
     //Relacion con UserEntity (el profesor del curso)
     @ManyToOne
