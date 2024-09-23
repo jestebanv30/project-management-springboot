@@ -55,7 +55,7 @@ public class ProjectRepository implements IProjectRepository {
     }
 
     // Metodo para obtener el proyecto mas reciente aprobado
-    public Optional<ProjectDto> getMostRecentApprovedProject() {
-        return iProjectCrud.findMostRecentApprovedProject().map(iProjectMapper::toProjectDto);
-    }
+    //public Optional<ProjectDto> getMostRecentApprovedProject() {
+    //    return iProjectCrud.findMostRecentApprovedProject().map(iProjectMapper::toProjectDto);
+    //}
 }

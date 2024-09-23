@@ -10,8 +10,8 @@ import java.util.Optional;
 public interface IProjectCrud extends JpaRepository<ProjectEntity, Integer> {
 
     // Obtiene el proyecto más reciente que esté aprobado
-    @Query("SELECT p FROM ProjectEntity p WHERE p.status = 'APPROVED' ORDER BY p.createdAt DESC")
-    Optional<ProjectEntity> findMostRecentApprovedProject();
+    //@Query("SELECT p FROM ProjectEntity p WHERE p.status = 'APPROVED' ORDER BY p.createdAt DESC")
+    //Optional<ProjectEntity> findMostRecentApprovedProject();
 
     List<ProjectEntity> findAllByCourseId(Integer courseId);
 

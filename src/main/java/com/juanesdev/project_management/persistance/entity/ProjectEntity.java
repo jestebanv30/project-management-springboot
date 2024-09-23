@@ -1,8 +1,10 @@
 package com.juanesdev.project_management.persistance.entity;
 
+import com.juanesdev.project_management.domain.enums.ProjectStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -12,6 +14,7 @@ import java.time.LocalDateTime;
 public class ProjectEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_project")
     private Integer idProject;
 
@@ -25,15 +28,15 @@ public class ProjectEntity {
 
     private String description;
 
-    @Column(name = "delivery_date")
-    private LocalDateTime deliveryDate;
-
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private ProjectStatus status;
 
     @Column(name = "files_url")
     private String filesUrl;
 
-    @Column(name = "created_at")
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
     //relacion con UserEntity (El estudiante que creó el proyecto)

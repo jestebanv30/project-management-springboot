@@ -44,10 +44,9 @@ public class CourseService implements ICourseUseCase {
 
     @Override
     public CourseDto save(CourseDto courseDto) {
-        Optional<CourseDto> courseDtoById = iCourseRepository.getByIdCourse(courseDto.getIdCourse());
         Optional<CourseDto> courseDtoByTitle = iCourseRepository.getByTitle(courseDto.getTitle());
 
-        if (courseDtoById.isPresent() || courseDtoByTitle.isPresent()) {
+        if (courseDtoByTitle.isPresent()) {
             throw new RuntimeException("Curso ya existente");
         }
 
@@ -80,6 +79,7 @@ public class CourseService implements ICourseUseCase {
         return true;
     }
 
+    @Override
     public List<CourseDto> getCoursesWithProjectCount() {
         return iCourseRepository.getCoursesWithProjectCount();
     }

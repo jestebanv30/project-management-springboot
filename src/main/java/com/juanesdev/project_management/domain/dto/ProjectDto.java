@@ -1,5 +1,6 @@
 package com.juanesdev.project_management.domain.dto;
 
+import com.juanesdev.project_management.domain.enums.ProjectStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,8 +13,7 @@ public class ProjectDto {
     private Integer courseId;
     private String title;
     private String description;
-    private LocalDateTime deliveryDate;
-    private String status;
+    private ProjectStatus status;
     private String filesUrl;
     private LocalDateTime createdAt;
 }

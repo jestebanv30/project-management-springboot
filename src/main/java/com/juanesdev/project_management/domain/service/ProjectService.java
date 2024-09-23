@@ -64,10 +64,9 @@ public class ProjectService implements IProjectUseCase {
 
     @Override
     public ProjectDto save(ProjectDto projectDto) {
-        Optional<ProjectDto> projectDtoId = iProjectRepository.getById(projectDto.getIdProject());
         Optional<ProjectDto> projectDtoTitle = iProjectRepository.getByTitle(projectDto.getTitle());
 
-        if (projectDtoId.isPresent() || projectDtoTitle.isPresent()) {
+        if (projectDtoTitle.isPresent()) {
             throw new RuntimeException("El proyecto ya existe");
         }
 
@@ -91,13 +90,12 @@ public class ProjectService implements IProjectUseCase {
 
     @Override
     public boolean deleteById(Integer id) {
-        Optional<ProjectDto> projectDtoById = iProjectRepository.getById(id);
 
-        if (projectDtoById.isEmpty()) {
+        if (iProjectRepository.getById(id).isEmpty()) {
             throw new RuntimeException("El proyecto no existe");
         }
 
         iProjectRepository.deleteById(id);
-        return false;
+        return true;
     }
 }
