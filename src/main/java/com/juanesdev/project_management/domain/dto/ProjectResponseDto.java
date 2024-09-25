@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter @Setter
 public class ProjectResponseDto {
-    private String id;
+    private Integer id;
     private String title;
     private String description;
     private String studentName;

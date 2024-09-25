@@ -1,6 +1,8 @@
 package com.juanesdev.project_management.controller;
 
 import com.juanesdev.project_management.domain.dto.ProjectDto;
+import com.juanesdev.project_management.domain.dto.ProjectResponseDto;
+import com.juanesdev.project_management.domain.enums.ProjectStatus;
 import com.juanesdev.project_management.domain.usecase.IProjectUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -8,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -17,7 +20,7 @@ public class ProjectController {
     private final IProjectUseCase iProjectUseCase;
 
     @GetMapping
-    public ResponseEntity<List<ProjectDto>> getAll() {
+    public ResponseEntity<List<ProjectResponseDto>> getAll() {
         return ResponseEntity.ok(iProjectUseCase.getAll());
     }
 
@@ -32,8 +35,8 @@ public class ProjectController {
     }
 
     @GetMapping("/courseId-{courseId}")
-    public ResponseEntity<List<ProjectDto>> getByCourseId (@PathVariable Integer courseId) {
-        return ResponseEntity.ok(iProjectUseCase.getByCourseId(courseId));
+    public ResponseEntity<List<ProjectResponseDto>> getByCourseId (@PathVariable Integer courseId) {
+        return ResponseEntity.of(Optional.ofNullable(iProjectUseCase.getByCourseId(courseId)));
     }
 
     @GetMapping("/studentId-{studentId}")
@@ -54,5 +57,10 @@ public class ProjectController {
     @DeleteMapping(path = "/{idProject}")
     public ResponseEntity<ProjectDto> delete(@PathVariable Integer idProject) {
         return new ResponseEntity<>(this.iProjectUseCase.deleteById(idProject) ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/recentProject")
+    public ResponseEntity<ProjectResponseDto> findFirstByStatusOrderByCreatedAtDesc(@RequestParam ProjectStatus status) {
+        return ResponseEntity.of(iProjectUseCase.findFirstByStatusOrderByCreatedAtDesc(status));
     }
 }

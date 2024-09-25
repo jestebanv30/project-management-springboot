@@ -1,15 +1,22 @@
 package com.juanesdev.project_management.domain.service;
 
+import com.juanesdev.project_management.domain.dto.CourseDto;
 import com.juanesdev.project_management.domain.dto.ProjectDto;
 import com.juanesdev.project_management.domain.dto.ProjectResponseDto;
+import com.juanesdev.project_management.domain.dto.UserDto;
 import com.juanesdev.project_management.domain.enums.ProjectStatus;
+import com.juanesdev.project_management.domain.repository.ICourseRepository;
 import com.juanesdev.project_management.domain.repository.IProjectRepository;
+import com.juanesdev.project_management.domain.repository.IUserRepository;
 import com.juanesdev.project_management.domain.usecase.IProjectUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -17,10 +24,20 @@ import java.util.Optional;
 public class ProjectService implements IProjectUseCase {
 
     private final IProjectRepository iProjectRepository;
+    private final IUserRepository iUserRepository;
+    private final ICourseRepository iCourseRepository;
 
     @Override
-    public List<ProjectDto> getAll() {
-        return iProjectRepository.getAll();
+    public List<ProjectResponseDto> getAll() {
+        List<ProjectResponseDto> projectResponseDtoList = new ArrayList<>();
+        List<ProjectDto> projectDtoList = iProjectRepository.getAll();
+
+        for (ProjectDto projectDto : projectDtoList) {
+            ProjectResponseDto projectResponseDto;
+            projectResponseDto = mapToProjectResponseDto(projectDto);
+            projectResponseDtoList.add(projectResponseDto);
+        }
+        return projectResponseDtoList;
     }
 
     @Override
@@ -45,13 +62,20 @@ public class ProjectService implements IProjectUseCase {
     }
 
     @Override
-    public List<ProjectDto> getByCourseId(Integer courseId) {
+    public List<ProjectResponseDto> getByCourseId(Integer courseId) {
         List<ProjectDto> projectDtoListDto = iProjectRepository.getByCourseId(courseId);
+        List<ProjectResponseDto> projectResponseDtoList = new ArrayList<>();
 
         if (projectDtoListDto.isEmpty()) {
             throw new RuntimeException("No hay proyectos asociado a esa materia");
         }
-        return projectDtoListDto;
+
+        for (ProjectDto projectDto : projectDtoListDto) {
+            ProjectResponseDto projectResponseDto;
+            projectResponseDto = mapToProjectResponseDto(projectDto);
+            projectResponseDtoList.add(projectResponseDto);
+        }
+        return projectResponseDtoList;
     }
 
     @Override
@@ -101,7 +125,53 @@ public class ProjectService implements IProjectUseCase {
         return true;
     }
 
-    public Optional<ProjectResponseDto> getLastApprovedProjects(ProjectStatus status) {
-        return null;
+    @Override
+    public Optional<ProjectResponseDto> findFirstByStatusOrderByCreatedAtDesc(ProjectStatus status) {
+
+        Optional<ProjectDto> projectDto = iProjectRepository.findFirstByStatusOrderByCreatedAtDesc(status);
+
+        if (projectDto.isEmpty()) {
+            throw new RuntimeException("No hay proyectos aprovados");
+        }
+        return Optional.of(mapToProjectResponseDto(projectDto.get()));
+    }
+
+    private ProjectResponseDto mapToProjectResponseDto(ProjectDto projectDto) {
+        ProjectResponseDto responseDto = new ProjectResponseDto();
+
+        // Asignamos los valores directos
+        responseDto.setId(projectDto.getIdProject());
+        responseDto.setTitle(projectDto.getTitle());
+        responseDto.setDescription(projectDto.getDescription());
+
+        // Mapear el nombre del estudiante desde algún servicio de usuario
+        Optional<UserDto> student = iUserRepository.getByIdUser(projectDto.getStudentId());
+        responseDto.setStudentName(student.get().getName());
+
+        // Mapear el nombre del curso desde algún servicio de curso
+        Optional<CourseDto> course = iCourseRepository.getByIdCourse(projectDto.getCourseId());
+        responseDto.setCourseName(course.get().getTitle());
+
+        // Calcular el tiempo transcurrido
+        responseDto.setTimeAgo(calculateTimeAgo(projectDto.getCreatedAt()));
+
+        // Supongamos que las imágenes están almacenadas como URLs en la propiedad filesUrl, las convertimos en una lista
+        responseDto.setImages(Arrays.asList(projectDto.getFilesUrl().split(",")));
+
+        return responseDto;
+    }
+
+    private String calculateTimeAgo(LocalDateTime createdAt) {
+        Duration duration = Duration.between(createdAt, LocalDateTime.now());
+
+        if (duration.toDays() > 0) {
+            return duration.toDays() + " days ago";
+        } else if (duration.toHours() > 0) {
+            return duration.toHours() + " hours ago";
+        } else if (duration.toMinutes() > 0) {
+            return duration.toMinutes() + " minutes ago";
+        } else {
+            return "just now";
+        }
     }
 }

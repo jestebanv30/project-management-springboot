@@ -60,6 +60,7 @@ public class ProjectRepository implements IProjectRepository {
     //    return iProjectCrud.findMostRecentApprovedProject().map(iProjectMapper::toProjectDto);
     //}
 
+    @Override
     public Optional<ProjectDto> findFirstByStatusOrderByCreatedAtDesc(ProjectStatus status) {
         return iProjectCrud.findFirstByStatusOrderByCreatedAtDesc(status).map(iProjectMapper::toProjectDto);
     }
