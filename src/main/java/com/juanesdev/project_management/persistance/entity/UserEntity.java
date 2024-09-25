@@ -1,5 +1,6 @@
 package com.juanesdev.project_management.persistance.entity;
 
+import com.juanesdev.project_management.domain.enums.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,7 +24,8 @@ public class UserEntity {
 
     private String password;
 
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     // Relación con ProjectEntity (los proyectos creados por el estudiante)
     @OneToMany(mappedBy = "student")

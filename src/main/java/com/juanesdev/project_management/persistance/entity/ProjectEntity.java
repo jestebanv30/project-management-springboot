@@ -29,7 +29,6 @@ public class ProjectEntity {
     private String description;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
     private ProjectStatus status;
 
     @Column(name = "files_url")

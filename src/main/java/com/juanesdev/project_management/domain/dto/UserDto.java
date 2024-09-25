@@ -1,5 +1,6 @@
 package com.juanesdev.project_management.domain.dto;
 
+import com.juanesdev.project_management.domain.enums.Role;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,5 +11,5 @@ public class UserDto {
     private String email;
     private String username;
     private String password;
-    private String role;
+    private Role role;
 }

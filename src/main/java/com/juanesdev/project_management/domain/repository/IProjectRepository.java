@@ -1,6 +1,7 @@
 package com.juanesdev.project_management.domain.repository;
 
 import com.juanesdev.project_management.domain.dto.ProjectDto;
+import com.juanesdev.project_management.domain.enums.ProjectStatus;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,4 +20,6 @@ public interface IProjectRepository {
     ProjectDto save(ProjectDto projectDto);
 
     void deleteById(Integer id);
+
+    Optional<ProjectDto> findFirstByStatusOrderByCreatedAtDesc(ProjectStatus status);
 }

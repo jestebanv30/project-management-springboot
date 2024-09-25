@@ -1,6 +1,8 @@
 package com.juanesdev.project_management.domain.service;
 
 import com.juanesdev.project_management.domain.dto.ProjectDto;
+import com.juanesdev.project_management.domain.dto.ProjectResponseDto;
+import com.juanesdev.project_management.domain.enums.ProjectStatus;
 import com.juanesdev.project_management.domain.repository.IProjectRepository;
 import com.juanesdev.project_management.domain.usecase.IProjectUseCase;
 import lombok.RequiredArgsConstructor;
@@ -97,5 +99,9 @@ public class ProjectService implements IProjectUseCase {
 
         iProjectRepository.deleteById(id);
         return true;
+    }
+
+    public Optional<ProjectResponseDto> getLastApprovedProjects(ProjectStatus status) {
+        return null;
     }
 }

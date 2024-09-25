@@ -1,6 +1,7 @@
 package com.juanesdev.project_management.persistance.repository;
 
 import com.juanesdev.project_management.domain.dto.ProjectDto;
+import com.juanesdev.project_management.domain.enums.ProjectStatus;
 import com.juanesdev.project_management.domain.repository.IProjectRepository;
 import com.juanesdev.project_management.persistance.crud.IProjectCrud;
 import com.juanesdev.project_management.persistance.entity.ProjectEntity;
@@ -58,4 +59,8 @@ public class ProjectRepository implements IProjectRepository {
     //public Optional<ProjectDto> getMostRecentApprovedProject() {
     //    return iProjectCrud.findMostRecentApprovedProject().map(iProjectMapper::toProjectDto);
     //}
+
+    public Optional<ProjectDto> findFirstByStatusOrderByCreatedAtDesc(ProjectStatus status) {
+        return iProjectCrud.findFirstByStatusOrderByCreatedAtDesc(status).map(iProjectMapper::toProjectDto);
+    }
 }
