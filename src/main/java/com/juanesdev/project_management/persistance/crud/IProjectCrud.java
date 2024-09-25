@@ -22,4 +22,6 @@ public interface    IProjectCrud extends JpaRepository<ProjectEntity, Integer> {
 
     // Metodo para obtener el ultimo proyecto aprobado
     Optional<ProjectEntity> findFirstByStatusOrderByCreatedAtDesc(ProjectStatus status);
+
+    Long countByStudentIdAndStatus(String studentId, ProjectStatus status);
 }

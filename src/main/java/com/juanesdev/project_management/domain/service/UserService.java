@@ -1,6 +1,9 @@
 package com.juanesdev.project_management.domain.service;
 
 import com.juanesdev.project_management.domain.dto.UserDto;
+import com.juanesdev.project_management.domain.dto.UserProfileResponseDto;
+import com.juanesdev.project_management.domain.enums.ProjectStatus;
+import com.juanesdev.project_management.domain.repository.IProjectRepository;
 import com.juanesdev.project_management.domain.repository.IUserRepository;
 import com.juanesdev.project_management.domain.usecase.IUserUseCase;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +17,7 @@ import java.util.Optional;
 public class UserService implements IUserUseCase {
 
     private final IUserRepository iUserRepository;
+    private final IProjectRepository iProjectRepository;
 
     @Override
     public List<UserDto> getAll() {
@@ -21,14 +25,26 @@ public class UserService implements IUserUseCase {
     }
 
     @Override
-    public Optional<UserDto> getByIdUser(String id) {
-        Optional<UserDto> userDto = iUserRepository.getByIdUser(id);
+    public Optional<UserProfileResponseDto> getByIdUser(String id) {
+        return iUserRepository.getByIdUser(id).map(userDto -> {
+            UserProfileResponseDto userProfileResponseDto = new UserProfileResponseDto();
 
-        if (userDto.isEmpty()) {
-            throw new RuntimeException("Usuario no encontrado");
-        }
+            userProfileResponseDto.setIdUser(userDto.getIdUser());
+            userProfileResponseDto.setName(userDto.getName());
+            userProfileResponseDto.setEmail(userDto.getEmail());
+            userProfileResponseDto.setUsername(userDto.getUsername());
+            userProfileResponseDto.setRole(userDto.getRole());
 
-        return userDto;
+            Long approvedCount = iProjectRepository.countByStudentIdAndStatus(userDto.getIdUser(), ProjectStatus.APPROVED);
+            Long rejectedCount = iProjectRepository.countByStudentIdAndStatus(userDto.getIdUser(), ProjectStatus.REJECTED);
+            Long pendingCount = iProjectRepository.countByStudentIdAndStatus(userDto.getIdUser(), ProjectStatus.PENDING);
+
+            userProfileResponseDto.setApprovedProjectsCount(approvedCount);
+            userProfileResponseDto.setRejectedProjectsCount(rejectedCount);
+            userProfileResponseDto.setPendingProjectsCount(pendingCount);
+
+            return userProfileResponseDto;
+        });
     }
 
     @Override
@@ -69,7 +85,7 @@ public class UserService implements IUserUseCase {
 
     @Override
     public Optional<UserDto> update(UserDto userDto) {
-        Optional<UserDto> existingUserDto = getByIdUser(userDto.getIdUser());
+        Optional<UserDto> existingUserDto = iUserRepository.getByIdUser(userDto.getIdUser());
 
         if (existingUserDto.isEmpty()) {
             throw new RuntimeException("Usuario no encontrado");

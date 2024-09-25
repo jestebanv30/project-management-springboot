@@ -64,4 +64,8 @@ public class ProjectRepository implements IProjectRepository {
     public Optional<ProjectDto> findFirstByStatusOrderByCreatedAtDesc(ProjectStatus status) {
         return iProjectCrud.findFirstByStatusOrderByCreatedAtDesc(status).map(iProjectMapper::toProjectDto);
     }
+
+    public Long countByStudentIdAndStatus(String studentId, ProjectStatus statusString) {
+        return iProjectCrud.countByStudentIdAndStatus(studentId, statusString);
+    }
 }

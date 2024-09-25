@@ -22,4 +22,6 @@ public interface IProjectRepository {
     void deleteById(Integer id);
 
     Optional<ProjectDto> findFirstByStatusOrderByCreatedAtDesc(ProjectStatus status);
+
+    Long countByStudentIdAndStatus(String studentId, ProjectStatus statusString);
 }

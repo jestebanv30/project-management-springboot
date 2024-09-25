@@ -63,4 +63,9 @@ public class ProjectController {
     public ResponseEntity<ProjectResponseDto> findFirstByStatusOrderByCreatedAtDesc(@RequestParam ProjectStatus status) {
         return ResponseEntity.of(iProjectUseCase.findFirstByStatusOrderByCreatedAtDesc(status));
     }
+
+    @GetMapping("/view-project")
+    public ResponseEntity<ProjectResponseDto> getByIdProjectViewPost(@RequestParam Integer idProject) {
+        return ResponseEntity.of(iProjectUseCase.getByIdProjectViewPost(idProject));
+    }
 }

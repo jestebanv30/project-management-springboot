@@ -25,4 +25,6 @@ public interface IProjectUseCase {
     boolean deleteById(Integer id);
 
     Optional<ProjectResponseDto> findFirstByStatusOrderByCreatedAtDesc(ProjectStatus status);
+
+    Optional<ProjectResponseDto> getByIdProjectViewPost(Integer idProject);
 }

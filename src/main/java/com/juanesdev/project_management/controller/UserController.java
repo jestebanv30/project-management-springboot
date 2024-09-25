@@ -1,6 +1,7 @@
 package com.juanesdev.project_management.controller;
 
 import com.juanesdev.project_management.domain.dto.UserDto;
+import com.juanesdev.project_management.domain.dto.UserProfileResponseDto;
 import com.juanesdev.project_management.domain.usecase.IUserUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class UserController {
     }
 
     @GetMapping(path = "/{idUser}")
-    public ResponseEntity<UserDto> getById(@PathVariable String idUser) {
+    public ResponseEntity<UserProfileResponseDto> getById(@PathVariable String idUser) {
         return ResponseEntity.of(iUserUseCase.getByIdUser(idUser));
     }
 

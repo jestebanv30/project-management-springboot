@@ -96,6 +96,8 @@ public class ProjectService implements IProjectUseCase {
             throw new RuntimeException("El proyecto ya existe");
         }
 
+        projectDto.setStatus(ProjectStatus.PENDING);
+
         return iProjectRepository.save(projectDto);
     }
 
@@ -136,6 +138,20 @@ public class ProjectService implements IProjectUseCase {
         return Optional.of(mapToProjectResponseDto(projectDto.get()));
     }
 
+    @Override
+    public Optional<ProjectResponseDto> getByIdProjectViewPost(Integer idProject) {
+        Optional<ProjectDto> projectDto = iProjectRepository.getById(idProject);
+        Optional<ProjectResponseDto> projectResponseDto;
+
+        if (projectDto.isEmpty()) {
+            throw new RuntimeException("Proyecto no encontrado");
+        }
+
+        projectResponseDto = Optional.of(mapToProjectResponseDto(projectDto.get()));
+
+        return projectResponseDto;
+    }
+
     private ProjectResponseDto mapToProjectResponseDto(ProjectDto projectDto) {
         ProjectResponseDto responseDto = new ProjectResponseDto();
 
@@ -143,6 +159,7 @@ public class ProjectService implements IProjectUseCase {
         responseDto.setId(projectDto.getIdProject());
         responseDto.setTitle(projectDto.getTitle());
         responseDto.setDescription(projectDto.getDescription());
+        responseDto.setStatus(projectDto.getStatus());
 
         // Mapear el nombre del estudiante desde algún servicio de usuario
         Optional<UserDto> student = iUserRepository.getByIdUser(projectDto.getStudentId());
