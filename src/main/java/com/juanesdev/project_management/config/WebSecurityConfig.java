@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -36,8 +37,21 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(requests ->
                         requests
                                 .requestMatchers("/auth/**").permitAll()
+                                // routes = api/course
+                                .requestMatchers(HttpMethod.GET, "/course/**").hasAnyRole(Role.ADMIN.toString(), Role.TEACHER.toString(), Role.STUDENT.toString())
+                                .requestMatchers(HttpMethod.POST, "/course").hasAnyRole(Role.ADMIN.toString())
+                                .requestMatchers(HttpMethod.PUT, "/course").hasAnyRole(Role.ADMIN.toString())
+                                .requestMatchers(HttpMethod.DELETE, "/course").hasAnyRole(Role.ADMIN.toString())
+                                // routes = api/projects
+                                .requestMatchers(HttpMethod.GET, "/project/**").hasAnyRole(Role.ADMIN.toString(), Role.TEACHER.toString(), Role.STUDENT.toString())
+                                .requestMatchers(HttpMethod.POST, "/project").hasAnyRole(Role.ADMIN.toString(), Role.STUDENT.toString())
+                                .requestMatchers(HttpMethod.PUT, "/project").hasAnyRole(Role.ADMIN.toString(), Role.TEACHER.toString(), Role.STUDENT.toString())
+                                .requestMatchers(HttpMethod.DELETE, "/project").hasAnyRole(Role.ADMIN.toString(), Role.STUDENT.toString())
                                 // routes = api/user
-                                .requestMatchers(HttpMethod.GET, "/user/**").hasAnyRole(Role.ADMIN.toString())
+                                .requestMatchers(HttpMethod.GET, "/user/**").hasAnyRole(Role.ADMIN.toString(), Role.TEACHER.toString(), Role.STUDENT.toString())
+                                .requestMatchers(HttpMethod.POST, "/user").hasAnyRole(Role.ADMIN.toString(), Role.TEACHER.toString(), Role.STUDENT.toString())
+                                .requestMatchers(HttpMethod.PUT, "/user").hasAnyRole(Role.ADMIN.toString(), Role.TEACHER.toString(), Role.STUDENT.toString())
+                                .requestMatchers(HttpMethod.DELETE, "/user").hasAnyRole(Role.ADMIN.toString())
                                 .anyRequest().authenticated()
                 );
 

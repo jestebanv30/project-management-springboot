@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-//Clase encargada de la creacion y validacion del jwt
 @Component
 public class JwtAuthenticationProvider {
 

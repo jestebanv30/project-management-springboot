@@ -10,6 +10,7 @@ import com.juanesdev.project_management.domain.repository.IProjectRepository;
 import com.juanesdev.project_management.domain.repository.IUserRepository;
 import com.juanesdev.project_management.domain.usecase.IProjectUseCase;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -118,13 +119,36 @@ public class ProjectService implements IProjectUseCase {
 
     @Override
     public boolean deleteById(Integer id) {
+        Optional<ProjectDto> projectDto = iProjectRepository.getById(id);
 
-        if (iProjectRepository.getById(id).isEmpty()) {
+        if (projectDto.isEmpty()) {
             throw new RuntimeException("El proyecto no existe");
         }
 
-        iProjectRepository.deleteById(id);
-        return true;
+        String projectStatus = projectDto.get().getStatus().toString();
+
+        //lista de roles
+        var roleUser = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        System.out.println("Rol de usuario:");
+        System.out.println(roleUser);
+
+        if (roleUser.stream().anyMatch(role -> String.valueOf(role).equals("ROLE_STUDENT"))) {
+            // Solo eliminar si el estado del proyecto es PENDING
+            if (!"PENDING".equals(projectStatus)) {
+                throw new RuntimeException("Solo los proyectos con estado PENDING pueden ser eliminados por estudiantes.");
+            }
+            System.out.println("Eliminando proyecto con estado pendiente con STUDENT");
+            iProjectRepository.deleteById(id);
+            return true;
+        }
+
+        if (roleUser.stream().anyMatch(role -> String.valueOf(role).equals("ROLE_ADMIN"))) {
+            System.out.println("Eliminando proyecto por administrador");
+            iProjectRepository.deleteById(id);
+            return true;
+        }
+
+        throw new RuntimeException("No tienes permiso para eliminar este proyecto");
     }
 
     @Override

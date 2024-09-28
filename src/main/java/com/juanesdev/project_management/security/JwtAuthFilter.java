@@ -57,7 +57,9 @@ public class JwtAuthFilter extends OncePerRequestFilter { //clase abstracta que 
             System.out.println(SecurityContextHolder.getContext().getAuthentication());
         } catch (RuntimeException e) {
             SecurityContextHolder.clearContext();
-            System.out.println(e.getMessage());
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Token invalido");
+            return;
         }
         filterChain.doFilter(request, response);
     }
