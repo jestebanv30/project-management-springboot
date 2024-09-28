@@ -2,6 +2,7 @@ package com.juanesdev.project_management.controller;
 
 import com.juanesdev.project_management.domain.dto.UserDto;
 import com.juanesdev.project_management.domain.dto.UserProfileResponseDto;
+import com.juanesdev.project_management.domain.dto.UserResponseDto;
 import com.juanesdev.project_management.domain.usecase.IUserUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -38,7 +39,7 @@ public class UserController {
     }
 
     @PostMapping()
-    public ResponseEntity<UserDto> create(@RequestBody UserDto userDto) {
+    public ResponseEntity<UserResponseDto> create(@RequestBody UserDto userDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(iUserUseCase.save(userDto));
     }
 
